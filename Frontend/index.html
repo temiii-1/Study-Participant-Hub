@@ -14,7 +14,7 @@
         }
 
         h1 {
-            color: #bf5700;  /* UT burnt orange */
+            color: #bf5700;  
         }
 
         #search {
@@ -22,6 +22,7 @@
             padding: 10px;
             font-size: 16px;
             margin-bottom: 20px;
+            margin-top: 20px;
             box-sizing: border-box;
         }
 
@@ -61,19 +62,68 @@
     <h1>UT Research Finder</h1>
     <p>Find research studies at UT Austin that match your interests.</p>
 
+    <select id="compensation-filter">
+        <option value="all">All Studies</option>
+        <option value="paid">Paid Only</option>
+        <option value="unpaid">Unpaid Only</option>
+    </select>
+
+    <select id="age-filter">
+        <option value = "all">All Ages</option>
+        <option value="18">18+</option>
+        <option value="21">21+</option>
+    </select>
+
+    <select id="sort-filter">
+        <option value = "newest">Descending</option>
+        <option value="oldest">Ascending</option>
+    </select>
+
     <input type="text" id="search" placeholder="Search studies...">
 
     <div id="studies-container"></div>
 
     <script>
-        // Fetch studies from our Flask API
+        // Fetch studies from Flask API
         async function loadStudies() {
             const response = await fetch("http://127.0.0.1:5000/studies");
-            const studies = await response.json();
-            displayStudies(studies);
+            allStudies = await response.json();
+            displayStudies(sortStudies(filterStudies(allStudies)));
         }
 
-        // Display studies on the page
+        // Filter studies based on compensation & age
+        function filterStudies(studies) {
+            const query = document.getElementById("search").value.toLowerCase();
+            const compensation = document.getElementById("compensation-filter").value;
+            const age = document.getElementById("age-filter").value; 
+
+            return studies.filter(study => {
+                const matchesSearch = study.title.toLowerCase().includes(query) ||
+                    study.description.toLowerCase().includes(query);
+
+                const matchesCompensation = compensation === "all" ||
+                    (compensation === "paid" && study.compensation) ||
+                    (compensation === "unpaid" && !study.compensation);
+                
+
+                const eligibilityText = study.eligibility.join(" ").toLowerCase(); 
+                const matchesAge = age === "all" ||
+                    (age === "18" && (eligibilityText.includes("18") || eligibilityText.includes("adults"))) ||
+                    (age === "21" && eligibilityText.includes("21"));
+
+                return matchesSearch && matchesCompensation && matchesAge;
+            });
+        }
+
+        function sortStudies(studies) {
+            const sort = document.getElementById("sort-filter").value;
+            return [...studies].sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                return sort === "newest" ? dateB - dateA : dateA - dateB;
+            });
+        }
+
         function displayStudies(studies) {
             const container = document.getElementById("studies-container");
             container.innerHTML = "";
@@ -91,19 +141,22 @@
             });
         }
 
-        // Search functionality
-        document.getElementById("search").addEventListener("input", async function() {
-            const query = this.value.toLowerCase();
-            const response = await fetch("http://127.0.0.1:5000/studies");
-            const studies = await response.json();
-            const filtered = studies.filter(study =>
-                study.title.toLowerCase().includes(query) ||
-                study.description.toLowerCase().includes(query)
-            );
-            displayStudies(filtered);
+        document.getElementById("search").addEventListener("input", function() {
+            displayStudies(sortStudies(filterStudies(allStudies))); 
         });
 
-        // Load studies when page opens
+        document.getElementById("compensation-filter").addEventListener("change", function() {
+            displayStudies(sortStudies(filterStudies(allStudies)));
+        });
+
+        document.getElementById("age-filter").addEventListener("change", function() {
+            displayStudies(sortStudies(filterStudies(allStudies)));
+        });
+
+        document.getElementById("sort-filter").addEventListener("change", function() {
+            displayStudies(sortStudies(filterStudies(allStudies)));
+        });
+
         loadStudies();
     </script>
 
