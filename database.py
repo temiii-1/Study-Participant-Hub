@@ -5,15 +5,21 @@ import json #just reads our json file
 conn = sqlite3.connect("studies.db")
 cursor = conn.cursor() #conn is the connextion to the database and cursur is the toll used to actually run commands on it
 
-
-# load studies from JSON file
-with open("studies.json", "r") as f:
-    studies = json.load(f)
-
 cursor.execute("DELETE FROM studies")  # clear existing studies, re-insert with categories
 
+# load Healthy Horns studies from JSON file
+with open("studies.json", "r") as f:
+    healthy_horns_studies = json.load(f)
+
+# load ClinicalTrials studies
+with open("clinicaltrials.json", "r") as f:
+    clinicaltrials_studies = json.load(f)
+
+all_studies = healthy_horns_studies + clinicaltrials_studies
+
+
 # insert each study(as a row) into the database
-for study in studies:
+for study in all_studies:
     cursor.execute("""
         INSERT INTO studies (title, date, description, eligibility, compensation, contact, category)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -30,4 +36,6 @@ for study in studies:
 conn.commit()
 conn.close()
 
-print(f"Loaded {len(studies)} studies into database")
+print(f"Loaded {len(all_studies)} total studies into database")
+print(f"Loaded {len(healthy_horns_studies)} Healthy Horns studies into database")
+print(f"Loaded {len(clinicaltrials_studies)} ClinicalTrials studies into database")
