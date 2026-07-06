@@ -16,6 +16,42 @@ data = response.json()
 
 studies = []
 
+CATEGORY_MAP = {
+    "ptsd": "PTSD/Trauma",
+    "ptsd, post traumatic stress disorder": "PTSD/Trauma",
+    "post-traumatic stress disorder": "PTSD/Trauma",
+    "posttraumatic stress disorder (ptsd)": "PTSD/Trauma",
+    
+    "depression": "Major Depression / Treatment Resistant Depression",
+    "depressive disorder, major": "Major Depression / Treatment Resistant Depression",
+    "major depressive disorder": "Major Depression / Treatment Resistant Depression",
+    "treatment resistant depression": "Major Depression / Treatment Resistant Depression",
+    
+    "anxiety": "Generalized Anxiety Disorder",
+    "generalized anxiety disorder": "Generalized Anxiety Disorder",
+    
+    "bipolar disorder": "Bipolar Disorder",
+    
+    "obsessive-compulsive disorder": "Obsessive-Compulsive Disorder",
+    
+    "panic disorder": "Panic Disorder",
+    
+    "social anxiety disorder": "Social Anxiety Disorder",
+    
+    "postpartum depression": "Postpartum Depression",
+    
+    "pregnancy": "Pregnancy",
+    "pregnancy preterm": "Pregnancy",
+    
+    "healthy adults": "Healthy Adult – 18-70 Years Old",
+    
+    "crohn disease": "Crohn's Disease",
+    "crohn's disease": "Crohn's Disease",
+    
+    "primary progressive aphasia(ppa)": "Primary Progressive Aphasia",
+    "primary progressive aphasia": "Primary Progressive Aphasia",
+}
+
 for study in data.get("studies", []):
     protocol = study.get("protocolSection", {})
 
@@ -28,7 +64,8 @@ for study in data.get("studies", []):
 
     # get category from conditions
     conditions = protocol.get("conditionsModule", {}).get("conditions", [])
-    category = conditions[0] if conditions else "Other"
+    raw_category = conditions[0] if conditions else "Other"
+    category = CATEGORY_MAP.get(raw_category.lower(), raw_category)
     
     title = protocol.get("identificationModule", {}).get("briefTitle", "")
     description = protocol.get("descriptionModule", {}).get("briefSummary", "")

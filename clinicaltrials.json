@@ -22,7 +22,7 @@
     ],
     "compensation": "",
     "contact": "Research Coordinator behavioral.neuroimaging@austin.utexas.edu",
-    "category": "Post-Traumatic Stress Disorder",
+    "category": "PTSD/Trauma",
     "source": "https://clinicaltrials.gov/study/NCT06002633",
     "min_age": "21 Years",
     "max_age": "60 Years"
@@ -36,7 +36,7 @@
     ],
     "compensation": "",
     "contact": "Wonshik Chee, PhD wpapp.help@austin.utexas.edu",
-    "category": "Depression",
+    "category": "Major Depression / Treatment Resistant Depression",
     "source": "https://clinicaltrials.gov/study/NCT05405803",
     "min_age": "40 Years",
     "max_age": "60 Years"
@@ -106,7 +106,7 @@
     ],
     "compensation": "",
     "contact": "Lauren K Enten, B.S.A. psychedelics@utexas.edu",
-    "category": "Treatment Resistant Depression",
+    "category": "Major Depression / Treatment Resistant Depression",
     "source": "https://clinicaltrials.gov/study/NCT06132178",
     "min_age": "22 Years",
     "max_age": "65 Years"
@@ -120,7 +120,7 @@
     ],
     "compensation": "",
     "contact": "Christopher G Beevers, PhD beevers@utexas.edu",
-    "category": "Depression",
+    "category": "Major Depression / Treatment Resistant Depression",
     "source": "https://clinicaltrials.gov/study/NCT06361095",
     "min_age": "18 Years",
     "max_age": "70 Years"
@@ -134,7 +134,7 @@
     ],
     "compensation": "",
     "contact": "Benjamin Chebaa, BA benjamin.chebaa@austin.utexas.edu",
-    "category": "Crohn Disease",
+    "category": "Crohn's Disease",
     "source": "https://clinicaltrials.gov/study/NCT04617184",
     "min_age": "18 Years",
     "max_age": "100 Years"
@@ -162,7 +162,7 @@
     ],
     "compensation": "",
     "contact": "Research Associate I ambreen.rana@austin.utexas.edu",
-    "category": "Posttraumatic Stress Disorder (PTSD)",
+    "category": "PTSD/Trauma",
     "source": "https://clinicaltrials.gov/study/NCT07060144",
     "min_age": "18 Years",
     "max_age": "46 Years"
@@ -176,7 +176,7 @@
     ],
     "compensation": "",
     "contact": "Henry Lab Research Coordinator aphasialab@austin.utexas.edu",
-    "category": "Primary Progressive Aphasia(PPA)",
+    "category": "Primary Progressive Aphasia",
     "source": "https://clinicaltrials.gov/study/NCT07219680",
     "min_age": "40 Years",
     "max_age": ""
@@ -190,7 +190,7 @@
     ],
     "compensation": "",
     "contact": "jasdeep kaur, PhD jasdeep.kaur@austin.utexas.edu",
-    "category": "Healthy Adults",
+    "category": "Healthy Adult \u2013 18-70 Years Old",
     "source": "https://clinicaltrials.gov/study/NCT05188079",
     "min_age": "18 Years",
     "max_age": "65 Years"
@@ -260,7 +260,7 @@
     ],
     "compensation": "",
     "contact": "Josh M Cisler, PhD josh.cisler@austin.utexas.edu",
-    "category": "PTSD",
+    "category": "PTSD/Trauma",
     "source": "https://clinicaltrials.gov/study/NCT07548125",
     "min_age": "18 Years",
     "max_age": "55 Years"
