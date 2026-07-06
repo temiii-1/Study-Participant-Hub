@@ -1,9 +1,38 @@
 import sqlite3 #python built in library for working with databases
 import json #just reads our json file
 
+#BUILD DATABASE: 1 database file, multiple tables/ spreadsheets inside it (studies,users,profiles)
+
 # connect to database (creates the file if it doesn't exist)
 conn = sqlite3.connect("studies.db")
 cursor = conn.cursor() #conn is the connextion to the database and cursur is the toll used to actually run commands on it
+
+#create user table for personal accounts
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+""")
+
+#create profile tables
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS profiles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        age TEXT,
+        major TEXT,
+        interests TEXT,
+        medical_conditions TEXT,
+        availability TEXT,
+        FOREIGN KEY (user_id) REFERENCES users (id)
+    )
+""")
+
+conn.commit()
+
 
 cursor.execute("DELETE FROM studies")  # clear existing studies, re-insert with categories
 

@@ -1,9 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from datetime import date
+from datetime import date, datetime, timedelta
 import sqlite3 
 import json
 import os
+import bcrypt
+import jwt
+
+
+SECRET_KEY = "ut-research-finder-secret-key-2026-make-it-long"  # Replace with a secure key in production
 
 
 app = Flask(__name__) #creates the web app
@@ -41,7 +46,7 @@ def get_studies():
 
     return jsonify(studies)
 
-# new route that acceots form submissions
+# new route for form submissions
 @app.route("/submit", methods=["POST"])
 def submit_study():
     data = request.get_json()
@@ -77,6 +82,67 @@ def submit_study():
 
     return jsonify({"message": "Study submitted successfully"}), 201
 
+@app.route("/signup", methods=["POST"])
+def signup():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
+
+    # Hash the password
+    password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # Check if email already exists
+    cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
+    if cursor.fetchone():
+        conn.close()
+        return jsonify({"error": "Email already registered"}), 400
+
+    # Insert new user
+    cursor.execute("""
+        INSERT INTO users (email, password_hash) VALUES (?, ?)
+    """, (email, password_hash))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Account created successfully"}), 201
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, password_hash FROM users WHERE email = ?", (email,))
+    user = cursor.fetchone()
+    conn.close()
+
+    if not user:
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    # Check password
+    if not bcrypt.checkpw(password.encode("utf-8"), user["password_hash"].encode("utf-8")):
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    # Generate JWT token
+    token = jwt.encode({
+        "user_id": user["id"],
+        "email": email,
+        "exp": datetime.now() + timedelta(days=7)
+    }, SECRET_KEY, algorithm="HS256")
+
+    return jsonify({"token": token, "message": "Login successful"}), 200
 # run the app and server restarts automatically when code is changed
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
