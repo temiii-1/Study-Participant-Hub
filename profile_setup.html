@@ -78,7 +78,7 @@
         <a href="#" onclick="logout()">Log out</a>
     </div>
 
-    <p>Fill out your profile to get AI-powered study recommendations tailored to you.</p>
+    <p>Fill out your profile to get AI-powered (WIP) study recommendations tailored to you.</p>
 
     <div class="form-group">
         <label>Age</label>
@@ -90,10 +90,14 @@
         <input type="text" id="major" placeholder="e.g. Psychology, Neuroscience">
     </div>
 
+
     <div class="form-group">
-        <label>Research Interests</label>
-        <textarea id="interests" placeholder="e.g. mental health, brain imaging, anxiety disorders"></textarea>
+        <label>Research Categories You're Interested In</label>
+        <div id="category-checkboxes" style="background: white; border: 1px solid #ccc; border-radius: 4px; padding: 10px; max-height: 200px; overflow-y: auto;">
+        </div>
     </div>
+
+    
 
     <div class="form-group">
         <label>Availability</label>
@@ -106,10 +110,7 @@
         </select>
     </div>
 
-    <div class="form-group">
-        <label>Any relevant medical or personal background (optional)</label>
-        <textarea id="medical" placeholder="e.g. history of anxiety, currently pregnant, healthy adult..."></textarea>
-    </div>
+    
 
     <button onclick="saveProfile()">Save Profile & Get Recommendations</button>
 
@@ -138,15 +139,36 @@
             window.location.href = "index.html";
         }
 
+        async function loadCategories() {
+            const response = await fetch(`${API}/categories`);
+            const categories = await response.json();
+            
+            const container = document.getElementById("category-checkboxes");
+            
+            categories.forEach(category => {
+                const div = document.createElement("div");
+                div.style.padding = "6px 0";
+                div.innerHTML = `
+                    <label style="font-weight: normal; cursor: pointer;">
+                        <input type="checkbox" value="${category}" style="width: auto; margin-right: 8px;">
+                        ${category}
+                    </label>
+                `;
+                container.appendChild(div);
+            });
+        }
+
         async function saveProfile() {
             const message = document.getElementById("message");
+            const checkboxes = document.querySelectorAll("#category-checkboxes input:checked");
+            const interests = Array.from(checkboxes).map(cb => cb.value).join(", ");
 
             const profile = {
                 age: document.getElementById("age").value,
                 major: document.getElementById("major").value,
-                interests: document.getElementById("interests").value,
+                interests: interests,
                 availability: document.getElementById("availability").value,
-                medical_conditions: document.getElementById("medical").value
+                medical_conditions: ""
             };
 
             const response = await fetch(`${API}/profile`, {
@@ -161,14 +183,16 @@
             const result = await response.json();
 
             if (response.ok) {
-                message.textContent = "Profile saved! Redirecting to recommendations...";
+                message.textContent = "Profile saved! Redirecting to home page...";
                 message.className = "success";
-                setTimeout(() => window.location.href = "recommendations.html", 2000);
+                setTimeout(() => window.location.href = "index.html", 2000);
             } else {
                 message.textContent = result.error;
                 message.className = "error";
             }
         }
+
+        loadCategories();
     </script>
 
 </body>

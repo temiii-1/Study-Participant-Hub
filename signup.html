@@ -132,9 +132,12 @@
             const result = await response.json();
 
             if (response.ok) {
-                message.textContent = "Account created! Redirecting to login...";
+                localStorage.setItem("token", result.token);
+                localStorage.setItem("email", email);
+                console.log("Signup successful, redirecting...");
+                message.textContent = "Account created! Redirecting to setup...";
                 message.className = "success";
-                setTimeout(() => window.location.href = "login.html", 2000);
+                setTimeout(() => window.location.href = "profile_setup.html", 2000);
             } else {
                 message.textContent = result.error;
                 message.className = "error";

@@ -109,9 +109,20 @@ def signup():
         INSERT INTO users (email, password_hash) VALUES (?, ?)
     """, (email, password_hash))
     conn.commit()
+
+    cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
+    new_user = cursor.fetchone()
+    
+
+    token = jwt.encode({
+        "user_id": new_user["id"],
+        "email": email,
+        "exp": datetime.now() + timedelta(days=7)
+    }, SECRET_KEY, algorithm="HS256")
+
     conn.close()
 
-    return jsonify({"message": "Account created successfully"}), 201
+    return jsonify({"message": "Account created successfully", "token": token}), 201
 
 
 @app.route("/login", methods=["POST"])
@@ -320,6 +331,16 @@ Return only the JSON array, no other text."""
             })
 
     return jsonify({"recommendations": recommendations}), 200
+
+@app.route("/categories", methods=["GET"])
+def get_categories():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT category FROM studies ORDER BY category")
+    rows = cursor.fetchall()
+    conn.close()
+    categories = [row["category"] for row in rows]
+    return jsonify(categories)
 # run the app and server restarts automatically when code is changed
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
