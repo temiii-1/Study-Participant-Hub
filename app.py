@@ -28,9 +28,11 @@ def get_db():
 
 @app.route("/", methods=["GET"])
 def index():
-    return jsonify({"message": "Research Participant Hub API is running"}), 200
+    return jsonify({
+        "message": "Horns Research Hub API is running",
+        "endpoints": ["/studies", "/categories", "/submit", "/signup", "/login", "/profile", "/bookmarks", "/recommendations"]
+    }), 200
 
-# returns all studies in the database as a JSON 
 @app.route("/studies", methods=["GET"])
 def get_studies():
     conn = get_db()
