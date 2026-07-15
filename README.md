@@ -1,4 +1,4 @@
-# Horns Research Hub
+# Research Participant Hub
 
 A full-stack web application that helps UT Austin students discover research studies they can participate in. Instead of checking multiple fragmented sources, students can find, filter, bookmark, and get AI-powered recommendations for studies all in one place.
 
@@ -27,6 +27,7 @@ A full-stack web application that helps UT Austin students discover research stu
 - **APIs:** ClinicalTrials.gov REST API, Groq LLaMA 3.3
 
 ## Project Structure
+```
 study-participant-hub/
 ├── app.py                     # Flask backend API
 ├── scraper.py                 # Healthy Horns web scraper
@@ -40,6 +41,7 @@ study-participant-hub/
 ├── submit.html                # Researcher submission form
 ├── requirements.txt           # Python dependencies
 └── README.md                  # Project documentation
+```
 
 ## Setup & Installation
 
