@@ -5,13 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Participant Hub</title>
     <style>
-        body {
+        /* body {
             font-family: Arial, sans-serif;
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
-        }
+        } */
+
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
         h1 {
             color: #bf5700;  
@@ -62,6 +75,33 @@
             max-width: 150px;
         }
 
+        /* .full-width-header {
+            background-color: #bf5700;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        } */
+
+        .full-width-header {
+            background-color: #bf5700;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .full-width-header h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .full-width-header a {
+            color: white;
+        }
+
         .study-card {
             background: white;
             padding: 20px;
@@ -95,11 +135,17 @@
 </head>
 <body>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <!-- <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h1 style="margin: 0; color: #bf5700;">Study Participant Hub</h1>
+        <div id="auth-links"></div>
+    </div> -->
+
+    <div class="full-width-header">
+        <a href="index.html" style="text-decoration: none;"><h1 style="margin: 0; color: white;">Study Participant Hub</h1></a>
         <div id="auth-links"></div>
     </div>
 
+    <div class="content">
     <p>Discover research studies at/around UT Austin looking for participants like you!</p>
     <div id="ai-banner" style="background: #fff8f0; border-left: 4px solid #bf5700; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: none;">
         <strong>Get personalized study recommendations</strong> - 
@@ -386,6 +432,6 @@
 
         loadStudies();
     </script>
-
+    </div>
 </body>
 </html>

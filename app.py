@@ -29,7 +29,7 @@ def get_db():
 @app.route("/", methods=["GET"])
 def index():
     return jsonify({
-        "message": "Horns Research Hub API is running",
+        "message": "Study Participant Hub API is running",
         "endpoints": ["/studies", "/categories", "/submit", "/signup", "/login", "/profile", "/bookmarks", "/recommendations"]
     }), 200
 
