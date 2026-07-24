@@ -52,7 +52,8 @@ def get_studies():
             "eligibility": json.loads(row["eligibility"]) if row["eligibility"] else [],
             "compensation": row["compensation"],
             "contact": row["contact"],
-            "category": row["category"]
+            "category": row["category"],
+            "university": row["university"]
         })
 
     return jsonify(studies)
@@ -285,7 +286,8 @@ def get_bookmarks():
             "description": row["description"],
             "compensation": row["compensation"],
             "contact": row["contact"],
-            "eligibility": json.loads(row["eligibility"]) if row["eligibility"] else []
+            "eligibility": json.loads(row["eligibility"]) if row["eligibility"] else [],
+            "university": row["university"]
         })
 
     return jsonify(studies), 200

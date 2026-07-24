@@ -50,8 +50,8 @@ all_studies = healthy_horns_studies + clinicaltrials_studies
 # insert each study(as a row) into the database
 for study in all_studies:
     cursor.execute("""
-        INSERT INTO studies (title, date, description, eligibility, compensation, contact, category)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO studies (title, date, description, eligibility, compensation, contact, category, university)
+        VALUES (?, ?, ?, ?, ?, ?, ?,?)
     """, (
         study["title"],
         study["date"],
@@ -59,7 +59,8 @@ for study in all_studies:
         json.dumps(study["eligibility"]),
         study["compensation"],
         study["contact"],
-        study["category"]
+        study["category"],
+        study.get("university", "UT Austin")
     ))
 
 conn.commit()

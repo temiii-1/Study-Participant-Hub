@@ -88,7 +88,8 @@ for element in soup.find_all(["button", "h3"]):
                     current_section = "contact"
 
             next_element = next_element.find_next_sibling()
-
+            
+        study["university"] = "UT Austin"
         studies.append(study)
 
 seen_titles = set()

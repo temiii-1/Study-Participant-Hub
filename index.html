@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Participant Hub</title>
     <style>
+
+        :root {
+            --primary: #bf5700;
+        }
   
         body {
             font-family: Arial, sans-serif;
@@ -20,13 +24,13 @@
         }
 
         h1 {
-            color: #bf5700;  
+            color:  var(--primary);  
         }
 
         button {
             margin-top: 10px;
             padding: 6px 12px;
-            background-color: #bf5700;
+            background-color:  var(--primary);
             color: white;
             border: none;
             border-radius: 4px;
@@ -34,7 +38,7 @@
         }
 
         button:hover {
-            background-color: #a04800;
+            background-color:  var(--primary);
         }
 
         select {
@@ -47,7 +51,7 @@
         }
 
         a {
-            color: #bf5700;
+            color:  var(--primary);
             text-decoration: none;
         }
 
@@ -79,7 +83,7 @@
         }
 
         .full-width-header {
-            background-color: #bf5700;
+            background-color:  var(--primary);
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
@@ -102,7 +106,7 @@
             padding: 20px;
             margin-bottom: 15px;
             border-radius: 8px;
-            border-left: 4px solid #bf5700;
+            border-left: 4px solid  var(--primary);
         }
 
         .study-title {
@@ -126,6 +130,17 @@
         .study-description {
             margin-bottom: 8px;
         }
+
+        .uni-btn {
+            margin-right: 8px;
+            margin-top: 0;
+            opacity: 0.6;
+        }
+
+        .active-uni {
+            opacity: 1;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -144,11 +159,19 @@
 
     <div class="content">
         <p>Discover research studies at/around UT Austin looking for participants like you!</p>
-        <div id="ai-banner" style="background: #fff8f0; border-left: 4px solid #bf5700; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: none;">
+        <div id="ai-banner" style="background: #fff8f0; border-left: 4px solid  var(--primary); padding: 15px; border-radius: 4px; margin-bottom: 20px; display: none;">
             <strong>Get personalized study recommendations</strong> - 
             Create an account and fill out your profile to receive AI-powered study matches tailored to you.
         </div>
-        <p>Are you a researcher? <a href="submit.html" style="color: #bf5700;">Submit your study here</a></p>
+        <p>Are you a researcher? <a href="submit.html" style="color:  var(--primary);">Submit your study here</a></p>
+
+
+
+        <div style="margin-bottom: 15px;">
+            <button onclick="selectUniversity('All')" id="uni-all" class="uni-btn active-uni">All Universities</button>
+            <button onclick="selectUniversity('UT Austin')" id="uni-ut" class="uni-btn">UT Austin</button>
+            <button onclick="selectUniversity('Texas A&M')" id="uni-tamu" class="uni-btn">Texas A&M</button>
+        </div>
 
         <select id="compensation-filter">
             <option value="all">All Studies</option>
@@ -214,7 +237,49 @@
                 window.location.href = "index.html";
             }
 
-            updateNav();
+            const UNIVERSITY_THEMES = {
+                "All": {
+                    primary: "#92b6f0",
+                    // primary: "#1a4a6b",
+                    secondary: "#ffffff"
+                },
+                "UT Austin": {
+                    primary: "#bf5700",
+                    secondary: "#ffffff"
+                },
+                "Texas A&M": {
+                    primary: "#500000",
+                    secondary: "#ffffff"
+                }
+            };
+
+            function applyTheme(university) {
+                const theme = UNIVERSITY_THEMES[university] || UNIVERSITY_THEMES["All"];
+                document.documentElement.style.setProperty("--primary", theme.primary);
+            }
+
+            let selectedUniversity = "All";
+
+            function selectUniversity(university) {
+                selectedUniversity = university;
+                applyTheme(university);
+
+                // Update button styles
+                document.querySelectorAll(".uni-btn").forEach(btn => {
+                    btn.classList.remove("active-uni");
+                });
+                
+                const btnMap = {
+                    "All": "uni-all",
+                    "UT Austin": "uni-ut", 
+                    "Texas A&M": "uni-tamu"
+                };
+                document.getElementById(btnMap[university]).classList.add("active-uni");
+
+                displayStudies(sortStudies(filterStudies(allStudies)));
+            }
+            
+            
             // Fetch studies from Flask API
             async function loadStudies() {
                 document.getElementById("loading-state").style.display = "block";
@@ -238,6 +303,8 @@
                 const compensation = document.getElementById("compensation-filter").value;
                 const age = document.getElementById("age-filter").value; 
                 const category = document.getElementById("category-filter").value;
+                
+
 
                 return studies.filter(study => {
                     const matchesSearch = study.title.toLowerCase().includes(query) ||
@@ -254,8 +321,9 @@
                         (age === "21" && eligibilityText.includes("21"));
                     
                     const matchesCategory = category === "all" || study.category === category;
+                    const matchesUniversity = selectedUniversity === "All" || study.university === selectedUniversity;
 
-                    return matchesSearch && matchesCompensation && matchesAge && matchesCategory;
+                    return matchesSearch && matchesCompensation && matchesAge && matchesCategory && matchesUniversity;
                 });
             }
 
@@ -310,10 +378,10 @@
                         <button 
                             id="bookmark-btn-${study.id}" 
                             onclick="toggleBookmark(${study.id})"
-                            style="background: none; border: none; font-size: 22px; cursor: pointer; color: ${bookmarkedIds.has(study.id) ? '#bf5700' : '#ccc'}; padding: 0; position: absolute; top: 12px; right: 12px; line-height: 1;">
+                            style="background: none; border: none; font-size: 22px; cursor: pointer; color: ${bookmarkedIds.has(study.id) ? 'var(--primary)' : '#ccc'}; padding: 0; position: absolute; top: 12px; right: 12px; line-height: 1;">
                             ${bookmarkedIds.has(study.id) ? '★' : '☆'}
                         </button>
-                        <div class="study-category" style="color: #bf5700; font-size: 14px; margin-bottom: 6px;">${study.category}</div>
+                        <div class="study-category" style="color:  var(--primary); font-size: 14px; margin-bottom: 6px;">${study.category}</div>
                         <div class="study-date">Posted: ${study.date}</div>
                         <div class="study-compensation">${study.compensation || "Compensation not listed"}</div>
                         <div class="study-preview" id="preview-${study.id}">
@@ -403,7 +471,7 @@
                     // Update button appearance
                     const btn = document.getElementById(`bookmark-btn-${studyId}`);
                     btn.textContent = bookmarkedIds.has(studyId) ? '★' : '☆';
-                    btn.style.color = bookmarkedIds.has(studyId) ? '#bf5700' : '#ccc';
+                    btn.style.color = bookmarkedIds.has(studyId) ? ' var(--primary)' : '#ccc';
                 }
             }
 
@@ -427,6 +495,8 @@
                 displayStudies(sortStudies(filterStudies(allStudies)));
             });
 
+            updateNav();
+            applyTheme("All");
             loadStudies();
         </script>
     </div>
