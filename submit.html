@@ -14,7 +14,7 @@
         }
 
         h1 {
-            color: #bf5700;
+            color: #92b6f0;
         }
 
         .form-group {
@@ -42,7 +42,7 @@
         }
 
         button {
-            background-color: #bf5700;
+            background-color: #92b6f0;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -69,7 +69,7 @@
         }
 
         a {
-            color: #bf5700;
+            color: #92b6f0;
         }
     </style>
 </head>
@@ -139,7 +139,7 @@
 
             const message = document.getElementById("message");
 
-            // Basic frontend validation
+            // frontend validation
             if (!title || !description || !contact || !category) {
                 message.textContent = "Please fill in all required fields (marked with *)";
                 message.className = "error";
@@ -147,7 +147,7 @@
             }
 
             // Send data to Flask API
-            const response = await fetch("http://127.0.0.1:5000/submit", {
+            const response = await fetch("https://study-participant-hub.onrender.com/submit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

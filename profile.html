@@ -18,9 +18,9 @@
             padding: 20px;
         }
 
-        h1, h2 { color: #bf5700; }
+        h1, h2 { color: #92b6f0; }
 
-        a { color: #bf5700; }
+        a { color: #92b6f0; }
 
         .header-content {
             max-width: 1150px;
@@ -29,12 +29,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%
+            width: 100%;
+            box-sizing: border-box;
+
         }
 
 
         .full-width-header {
-            background-color: #bf5700;
+            background-color: #92b6f0;
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
@@ -46,6 +48,22 @@
             color: white;
             margin: 0;
             font-size: 28px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 600px) {
+            .full-width-header h1 {
+                font-size: 16px;
+            }
+
+            .header-content {
+                padding: 0 10px;
+            }
+
+            #user-email {
+                display: none;
+            }
+            
         }
 
         .full-width-header a {
@@ -68,7 +86,7 @@
             background: white;
             padding: 20px;
             border-radius: 8px;
-            border-left: 4px solid #bf5700;
+            border-left: 4px solid #92b6f0;
             margin-bottom: 20px;
         }
 
@@ -90,8 +108,8 @@
         .tag {
             display: inline-block;
             background-color: #fff0e6;
-            color: #bf5700;
-            border: 1px solid #bf5700;
+            color: #92b6f0;
+            border: 1px solid #92b6f0;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 13px;
@@ -99,7 +117,7 @@
         }
 
         button {
-            background-color: #bf5700;
+            background-color: #92b6f0;
             color: white;
             padding: 8px 16px;
             border: none;
@@ -115,7 +133,7 @@
             padding: 20px;
             margin-bottom: 15px;
             border-radius: 8px;
-            border-left: 4px solid #bf5700;
+            border-left: 4px solid #92b6f0;
         }
 
         .study-title {
@@ -125,7 +143,7 @@
         }
 
         .study-category {
-            color: #bf5700;
+            color: #92b6f0;
             font-size: 13px;
             margin-bottom: 4px;
         }
@@ -273,22 +291,13 @@
                 result.recommendations.forEach(rec => {
                     const card = document.createElement("div");
                     card.className = "study-card";
-                    // card.innerHTML = `
-                    //     <div class="study-title" style="padding-right: 40px;">${rec.title}</div>
-                    //     <div class="study-category">${rec.category}</div>
-                    //     <div class="study-compensation">${rec.compensation || "Compensation not listed"}</div>
-                    //     <div style="background-color: #fff8f0; border-left: 3px solid #bf5700; padding: 10px; margin: 10px 0; font-style: italic; color: #555;">
-                    //         💡 ${rec.reason}
-                    //     </div>
-                    //     <p>${rec.description.replace("Description (purpose of the study):", "").substring(0, 200)}...</p>
-                    //     <p><strong>Contact:</strong> ${rec.contact || "No contact info listed"}</p>
-                    // `;
+                  
                     card.innerHTML = `
                         <div style="position: relative;">
                             <div class="study-title" style="padding-right: 40px;">${rec.title}</div>
                             <div class="study-category">${rec.category}</div>
                             <div class="study-compensation">${rec.compensation || "Compensation not listed"}</div>
-                            <div style="background-color: #fff8f0; border-left: 3px solid #bf5700; padding: 10px; margin: 10px 0; font-style: italic; color: #555;">
+                            <div style="background-color: #fff8f0; border-left: 3px solid #92b6f0; padding: 10px; margin: 10px 0; font-style: italic; color: #555;">
                                 💡 ${rec.reason}
                             </div>
                             <div id="rec-preview-${rec.id}">
@@ -349,7 +358,6 @@
                 document.getElementById("profile-major").textContent = profile.major || "—";
                 document.getElementById("profile-availability").textContent = profile.availability || "—";
 
-                // Display interests as tags
                 const interestsContainer = document.getElementById("profile-interests");
                 if (profile.interests) {
                     const interests = profile.interests.split(", ");
@@ -386,10 +394,8 @@
                 });
 
                 if (response.ok) {
-                    // Remove the card from the page
                     btn.closest(".study-card").remove();
 
-                    // If no bookmarks left show placeholder
                     const container = document.getElementById("bookmarks-container");
                     if (container.children.length === 0) {
                         document.getElementById("bookmarks-placeholder").style.display = "block";
@@ -422,7 +428,7 @@
                             <div class="study-category">${study.category}</div>
                             <div class="study-compensation">${study.compensation || "Compensation not listed"}</div>
                         </div>
-                        <button onclick="removeBookmark(${study.id}, this)" title="Remove bookmark"style="background: none; border: none; font-size: 20px; cursor: pointer; color: #bf5700; padding: 0;">★</button>
+                        <button onclick="removeBookmark(${study.id}, this)" title="Remove bookmark"style="background: none; border: none; font-size: 20px; cursor: pointer; color: #92b6f0; padding: 0;">★</button>
                     </div>
                     <div id="bk-preview-${study.id}">
                         <p>${study.description.replace("Description (purpose of the study):", "").substring(0, 200)}...</p>

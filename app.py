@@ -344,7 +344,7 @@ def get_recommendations():
     except:
         return jsonify({"error": "Invalid token"}), 401
 
-    # Get user profile
+    # get user profile
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM profiles WHERE user_id = ?", (user_id,))
@@ -354,7 +354,7 @@ def get_recommendations():
         conn.close()
         return jsonify({"error": "Please complete your profile first"}), 400
 
-    # Get all studies
+    # get all studies
     cursor.execute("SELECT * FROM studies")
     rows = cursor.fetchall()
     conn.close()
