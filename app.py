@@ -401,7 +401,7 @@ def get_recommendations():
     # Call Groq API
     chat_completion = groq_client.chat.completions.create(
         messages=[{"role": "user", "content": prompt}],
-        model="gpt-oss-120b"
+        model="openai/gpt-oss-20b"
     )
 
     ai_text = chat_completion.choices[0].message.content.strip()
