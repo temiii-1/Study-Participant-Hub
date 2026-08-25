@@ -385,23 +385,23 @@ def get_recommendations():
 
     prompt = f"""You are a research study matcher for UT Austin students.
 
-Student profile:
-{profile_text}
+    Student profile:
+    {profile_text}
 
-Available studies:
-{studies_text}
+    Available studies:
+    {studies_text}
 
-Pick the top 5 studies that best match this student based on their interests, age, and background.
-Respond ONLY with a JSON array like this, no other text:
-[
-  {{"id": 1, "reason": "Matches your interest in anxiety research and you meet the age requirement"}},
-  {{"id": 2, "reason": "..."}}
-]"""
+    Pick the top 5 studies that best match this student based on their interests, age, and background.
+    Respond ONLY with a JSON array like this, no other text:
+    [
+    {{"id": 1, "reason": "Matches your interest in anxiety research and you meet the age requirement"}},
+    {{"id": 2, "reason": "..."}}
+    ]"""
 
     # Call Groq API
     chat_completion = groq_client.chat.completions.create(
         messages=[{"role": "user", "content": prompt}],
-        model="llama-3.3-70b-versatile"
+        model="gpt-oss-120b"
     )
 
     ai_text = chat_completion.choices[0].message.content.strip()
